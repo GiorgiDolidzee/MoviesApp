@@ -7,9 +7,10 @@ import com.movieapp.model.Movie
 import com.movieapp.repositories.popular_movies.MoviesRepository
 import com.movieapp.utils.Constants.API_KEY
 import com.movieapp.utils.MovieType
-import com.movieapp.utils.Resource
+import com.movieapp.utils.NetworkResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.IOException
 
 class MoviesPagingSource(
     private val popularMoviesRepository: MoviesRepository,
@@ -29,29 +30,26 @@ class MoviesPagingSource(
         withContext(Dispatchers.IO) {
             return@withContext try {
                 val page = params.key ?: 1
-                val response : Resource<Data> = when(movieType) {
+                val response : NetworkResponse<Data> = when(movieType) {
                     MovieType.POPULAR -> popularMoviesRepository.getPopularMovies(API_KEY, page)
-                    MovieType.SIMILAR -> popularMoviesRepository.getSimilarMoviesById(API_KEY, page, movieId!!)
-                    MovieType.SEARCH -> popularMoviesRepository.getMoviesByKeyword(API_KEY, keyword!!, page)
+                    MovieType.SIMILAR -> popularMoviesRepository.getSimilarMoviesById(API_KEY, page, movieId?:0)
+                    MovieType.SEARCH -> popularMoviesRepository.getMoviesByKeyword(API_KEY, keyword?:"", page)
                 }
 
                 when(response) {
-                    is Resource.Success -> {
+                    is NetworkResponse.Success -> {
                         var previousPage: Int? = null
                         var nextPage: Int? = null
                         if (response.data?.totalPages!! > page) { nextPage = page + 1 }
                         if (page != 1) { previousPage = page - 1 }
                         LoadResult.Page(
-                            response.data.results,
-                            previousPage,
-                            nextPage
+                            data = response.data.results,
+                            prevKey = previousPage,
+                            nextKey = nextPage
                         )
                     }
-                    is Resource.Error -> {
-                        LoadResult.Error(Exception())
-                    }
-                    else -> {
-                        LoadResult.Error(Exception())
+                    is NetworkResponse.Error -> {
+                        LoadResult.Error(Exception("Something went wrong.. Try again"))
                     }
                 }
             } catch (e: Exception) {

@@ -7,9 +7,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.movieapp.adapters.MoviesPagingAdapter
 import com.movieapp.databinding.FragmentMoviesBinding
+import com.movieapp.extensions.getErrorMessage
 import com.movieapp.extensions.hide
 import com.movieapp.extensions.showSnackBar
 import com.movieapp.extensions.visible
@@ -23,7 +25,7 @@ import kotlinx.coroutines.launch
 class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding::inflate) {
 
     private val viewModel: MoviesViewModel by viewModels()
-    private lateinit var moviesAdapter : MoviesPagingAdapter
+    private lateinit var moviesAdapter: MoviesPagingAdapter
 
     override fun init() {
         viewModel.getMovies()
@@ -45,16 +47,10 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
             viewModel.getMovies()
             binding.swipeRefresh.isRefreshing = false
         }
-//        binding.etSearch.setOnFocusChangeListener { _, hasFocus ->
-//            if (hasFocus) {
-//                Toast.makeText(requireContext(), "active", Toast.LENGTH_SHORT).show()
-//            } else {
-//                Toast.makeText(requireContext(), "no", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-        binding.etSearch.addTextChangedListener {
-            d("JEMALI", it.toString())
-            viewModel.getMovies(it.toString())
+        binding.etSearch.addTextChangedListener { text ->
+            if (text.toString().isNotEmpty()) {
+                viewModel.getMovies(text.toString())
+            }
         }
     }
 
@@ -68,14 +64,17 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getMoviesResponse.collect { movies ->
-                    when(movies) {
-                        is Resource.Success -> {
+                    when (movies) {
+                        is Resource.DataIsFilled -> {
                             binding.rvMovies.visible()
                             binding.rvMovies.startLayoutAnimation()
                             moviesAdapter.submitData(lifecycle, movies.data!!)
-                        }
-                        is Resource.Error -> {
-                            view?.showSnackBar(movies.errorMessage.toString())
+                            moviesAdapter.addLoadStateListener { loadState ->
+                                d("JEMALI-fr", loadState.append.toString())
+                                if (loadState.append is LoadState.Error || loadState.prepend is LoadState.Error || loadState.refresh is LoadState.Error) {
+                                    view?.showSnackBar(loadState.getErrorMessage())
+                                }
+                            }
                         }
                         is Resource.Loading -> {
                             binding.rvMovies.hide()

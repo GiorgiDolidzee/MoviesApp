@@ -73,12 +73,9 @@ class MoviesDetailFragment :
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getSimilarMoviesResponse.collect { movie ->
                     when (movie) {
-                        is Resource.Success -> {
+                        is Resource.DataIsFilled -> {
                             binding.rvSimilarMovies.visible()
                             moviesAdapter.submitData(lifecycle, movie.data!!)
-                        }
-                        is Resource.Error -> {
-                            view?.showSnackBar(movie.errorMessage.toString())
                         }
                         is Resource.Loading -> {
                             binding.rvSimilarMovies.hide()

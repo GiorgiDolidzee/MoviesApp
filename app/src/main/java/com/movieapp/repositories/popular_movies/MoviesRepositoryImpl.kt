@@ -2,6 +2,7 @@ package com.movieapp.repositories.popular_movies
 
 import com.movieapp.model.Data
 import com.movieapp.network.MoviesApi
+import com.movieapp.utils.NetworkResponse
 import com.movieapp.utils.Resource
 import com.movieapp.utils.ResponseHandler
 import kotlinx.coroutines.Dispatchers
@@ -13,28 +14,28 @@ class MoviesRepositoryImpl @Inject constructor(
     private val api: MoviesApi,
 ) : MoviesRepository {
 
-    override suspend fun getPopularMovies(apiKey: String, page: Int): Resource<Data> =
+    override suspend fun getPopularMovies(apiKey: String, page: Int): NetworkResponse<Data> =
         withContext(Dispatchers.IO) {
             return@withContext try {
                 val response = api.getPopularMovies(apiKey = apiKey, page = page)
                 val result = response.body()
                 when (response.code()) {
                     SUCCESS_CODE -> responseHandler.handleSuccess(result)
-                    else -> Resource.Error("Network error, code: ${response.code()}")
+                    else -> NetworkResponse.Error("Network error, code: ${response.code()}")
                 }
             } catch (e: Exception) {
                 responseHandler.handleException(e)
             }
         }
 
-    override suspend fun getSimilarMoviesById(apiKey: String, page: Int, movieId: Int): Resource<Data> =
+    override suspend fun getSimilarMoviesById(apiKey: String, page: Int, movieId: Int): NetworkResponse<Data> =
         withContext(Dispatchers.IO) {
             return@withContext try {
                 val response = api.getSimilarMovies(tvId = movieId, apiKey = apiKey, page = page)
                 val result = response.body()
                 when (response.code()) {
                     SUCCESS_CODE -> responseHandler.handleSuccess(result)
-                    else -> Resource.Error("Network error, code: ${response.code()}")
+                    else -> NetworkResponse.Error("Network error, code: ${response.code()}")
                 }
             } catch (e: Exception) {
                 responseHandler.handleException(e)
@@ -45,14 +46,14 @@ class MoviesRepositoryImpl @Inject constructor(
         apiKey: String,
         keyword: String,
         page: Int
-    ): Resource<Data> =
+    ): NetworkResponse<Data> =
         withContext(Dispatchers.IO) {
             return@withContext try {
                 val response = api.getMoviesByKeyword(apiKey = apiKey, query = keyword, page = page)
                 val result = response.body()
                 when (response.code()) {
                     SUCCESS_CODE -> responseHandler.handleSuccess(result)
-                    else -> Resource.Error("Network error, code: ${response.code()}")
+                    else -> NetworkResponse.Error("Network error, code: ${response.code()}")
                 }
             } catch (e: Exception) {
                 responseHandler.handleException(e)

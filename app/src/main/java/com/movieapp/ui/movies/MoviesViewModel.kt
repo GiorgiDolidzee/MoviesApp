@@ -30,14 +30,14 @@ class MoviesViewModel @Inject constructor(
                     Pager(config = PagingConfig(1), pagingSourceFactory = { MoviesPagingSource(moviesRepository, MovieType.POPULAR, keyword) })
                         .flow
                         .cachedIn(viewModelScope).collect { movies ->
-                            _getMoviesResponse.emit(Resource.Success(movies))
+                            _getMoviesResponse.emit(Resource.DataIsFilled(movies))
                         }
                 }
                 else -> {
                     Pager(config = PagingConfig(1), pagingSourceFactory = { MoviesPagingSource(moviesRepository, MovieType.SEARCH, keyword) })
                         .flow
                         .cachedIn(viewModelScope).collect { movies ->
-                            _getMoviesResponse.emit(Resource.Success(movies))
+                            _getMoviesResponse.emit(Resource.DataIsFilled(movies))
                         }
                 }
             }
