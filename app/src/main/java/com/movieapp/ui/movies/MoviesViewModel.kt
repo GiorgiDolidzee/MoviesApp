@@ -27,7 +27,7 @@ class MoviesViewModel @Inject constructor(
             _getMoviesResponse.emit(Resource.Loading())
             when(keyword) {
                 null, "" -> {
-                    Pager(config = PagingConfig(1), pagingSourceFactory = { MoviesPagingSource(moviesRepository, MovieType.POPULAR, keyword) })
+                    Pager(config = PagingConfig(1), pagingSourceFactory = { MoviesPagingSource(moviesRepository, MovieType.POPULAR) })
                         .flow
                         .cachedIn(viewModelScope).collect { movies ->
                             _getMoviesResponse.emit(Resource.DataIsFilled(movies))

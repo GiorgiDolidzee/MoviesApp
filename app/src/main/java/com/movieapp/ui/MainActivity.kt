@@ -1,4 +1,4 @@
-package com.movieapp
+package com.movieapp.ui
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -7,6 +7,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.movieapp.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

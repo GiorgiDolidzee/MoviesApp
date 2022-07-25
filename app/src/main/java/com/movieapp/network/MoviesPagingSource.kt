@@ -2,10 +2,10 @@ package com.movieapp.network
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.movieapp.BuildConfig
 import com.movieapp.model.Data
 import com.movieapp.model.Movie
 import com.movieapp.repository.MoviesRepository
-import com.movieapp.utils.Constants.API_KEY
 import com.movieapp.utils.MovieType
 import com.movieapp.utils.NetworkResponse
 import kotlinx.coroutines.Dispatchers
@@ -30,9 +30,9 @@ class MoviesPagingSource(
             return@withContext try {
                 val page = params.key ?: 1
                 val response : NetworkResponse<Data> = when(movieType) {
-                    MovieType.POPULAR -> popularMoviesRepository.getPopularMovies(API_KEY, page)
-                    MovieType.SIMILAR -> popularMoviesRepository.getSimilarMoviesById(API_KEY, page, movieId?:0)
-                    MovieType.SEARCH -> popularMoviesRepository.getMoviesByKeyword(API_KEY, keyword?:"", page)
+                    MovieType.POPULAR -> popularMoviesRepository.getPopularMovies(BuildConfig.API_KEY, page)
+                    MovieType.SIMILAR -> popularMoviesRepository.getSimilarMoviesById(BuildConfig.API_KEY, page, movieId?:0)
+                    MovieType.SEARCH -> popularMoviesRepository.getMoviesByKeyword(BuildConfig.API_KEY, keyword?:"", page)
                 }
 
                 when(response) {
