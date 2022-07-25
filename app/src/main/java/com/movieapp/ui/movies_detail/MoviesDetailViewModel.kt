@@ -8,7 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.movieapp.model.Movie
 import com.movieapp.network.MoviesPagingSource
-import com.movieapp.repositories.popular_movies.MoviesRepository
+import com.movieapp.repository.MoviesRepository
 import com.movieapp.utils.MovieType
 import com.movieapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

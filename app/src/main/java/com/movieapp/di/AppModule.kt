@@ -1,8 +1,8 @@
 package com.movieapp.di
 
 import com.movieapp.network.MoviesApi
-import com.movieapp.repositories.popular_movies.MoviesRepository
-import com.movieapp.repositories.popular_movies.MoviesRepositoryImpl
+import com.movieapp.repository.MoviesRepository
+import com.movieapp.repository.MoviesRepositoryImpl
 import com.movieapp.utils.Constants.API_BASE_URL
 import com.movieapp.utils.ResponseHandler
 import dagger.Module
@@ -35,6 +35,5 @@ object AppModule {
         responseHandler: ResponseHandler,
         api: MoviesApi
     ) : MoviesRepository = MoviesRepositoryImpl(responseHandler, api)
-
 
 }

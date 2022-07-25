@@ -4,13 +4,12 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.movieapp.model.Data
 import com.movieapp.model.Movie
-import com.movieapp.repositories.popular_movies.MoviesRepository
+import com.movieapp.repository.MoviesRepository
 import com.movieapp.utils.Constants.API_KEY
 import com.movieapp.utils.MovieType
 import com.movieapp.utils.NetworkResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.IOException
 
 class MoviesPagingSource(
     private val popularMoviesRepository: MoviesRepository,

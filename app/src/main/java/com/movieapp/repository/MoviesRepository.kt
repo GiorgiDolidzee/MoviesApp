@@ -1,4 +1,4 @@
-package com.movieapp.repositories.popular_movies
+package com.movieapp.repository
 
 import com.movieapp.model.Data
 import com.movieapp.utils.NetworkResponse

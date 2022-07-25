@@ -1,4 +1,4 @@
-package com.movieapp.extensions
+package com.movieapp.utils.extensions
 
 import android.view.View
 import androidx.core.view.isVisible

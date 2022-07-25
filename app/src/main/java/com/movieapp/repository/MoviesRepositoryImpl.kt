@@ -1,9 +1,8 @@
-package com.movieapp.repositories.popular_movies
+package com.movieapp.repository
 
 import com.movieapp.model.Data
 import com.movieapp.network.MoviesApi
 import com.movieapp.utils.NetworkResponse
-import com.movieapp.utils.Resource
 import com.movieapp.utils.ResponseHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

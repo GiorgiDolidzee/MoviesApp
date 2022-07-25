@@ -1,12 +1,14 @@
 package com.movieapp.utils
 
-import java.net.UnknownHostException
+import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 class ResponseHandler {
     fun <T> handleException(e: Exception) : NetworkResponse<T> {
         return when(e) {
-            is UnknownHostException -> NetworkResponse.Error("Sadadasa")
-            else -> NetworkResponse.Error(e.toString())
+            is SocketTimeoutException -> NetworkResponse.Error("Check your internet connection")
+            is HttpException -> NetworkResponse.Error("Unexcepted network error, try again")
+            else -> NetworkResponse.Error("Unexcepted error, try again")
         }
     }
 

@@ -1,6 +1,5 @@
 package com.movieapp.ui.movies
 
-import android.util.Log.d
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -11,10 +10,10 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.movieapp.adapters.MoviesPagingAdapter
 import com.movieapp.databinding.FragmentMoviesBinding
-import com.movieapp.extensions.getErrorMessage
-import com.movieapp.extensions.hide
-import com.movieapp.extensions.showSnackBar
-import com.movieapp.extensions.visible
+import com.movieapp.utils.extensions.getErrorMessage
+import com.movieapp.utils.extensions.hide
+import com.movieapp.utils.extensions.showSnackBar
+import com.movieapp.utils.extensions.visible
 import com.movieapp.ui.base.BaseFragment
 import com.movieapp.utils.MovieType
 import com.movieapp.utils.Resource
@@ -48,9 +47,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
             binding.swipeRefresh.isRefreshing = false
         }
         binding.etSearch.addTextChangedListener { text ->
-            if (text.toString().isNotEmpty()) {
-                viewModel.getMovies(text.toString())
-            }
+            viewModel.getMovies(text.toString())
         }
     }
 
@@ -70,7 +67,6 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
                             binding.rvMovies.startLayoutAnimation()
                             moviesAdapter.submitData(lifecycle, movies.data!!)
                             moviesAdapter.addLoadStateListener { loadState ->
-                                d("JEMALI-fr", loadState.append.toString())
                                 if (loadState.append is LoadState.Error || loadState.prepend is LoadState.Error || loadState.refresh is LoadState.Error) {
                                     view?.showSnackBar(loadState.getErrorMessage())
                                 }

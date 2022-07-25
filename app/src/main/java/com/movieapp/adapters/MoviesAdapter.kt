@@ -1,6 +1,5 @@
 package com.movieapp.adapters
 
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
@@ -8,10 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.movieapp.databinding.ItemMovieBinding
 import com.movieapp.databinding.ItemSimilarMovieBinding
-import com.movieapp.extensions.setImage
 import com.movieapp.model.Movie
 import com.movieapp.utils.Constants.IMAGE_BASE_URL
 import com.movieapp.utils.MovieType
+import com.movieapp.utils.extensions.setImage
 
 typealias onMovieClick = (movie: Movie) -> Unit
 
@@ -23,7 +22,6 @@ class MoviesPagingAdapter(val movieType: MovieType) : PagingDataAdapter<Movie, R
     inner class MoviesViewHolder(val binding: ItemMovieBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind() {
             val movie = getItem(absoluteAdapterPosition)
-            d("JEMALI-item", movie.toString())
             with(binding) {
                 ivImage.setImage(IMAGE_BASE_URL.plus(movie?.posterPath))
                 tvVoteAverage.text = movie?.voteAverage.toString()

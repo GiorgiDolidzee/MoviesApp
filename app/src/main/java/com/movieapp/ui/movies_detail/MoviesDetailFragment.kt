@@ -1,5 +1,6 @@
 package com.movieapp.ui.movies_detail
 
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -7,12 +8,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.movieapp.R
 import com.movieapp.adapters.MoviesPagingAdapter
 import com.movieapp.databinding.FragmentMoviesDetailBinding
-import com.movieapp.extensions.hide
-import com.movieapp.extensions.setImage
-import com.movieapp.extensions.showSnackBar
-import com.movieapp.extensions.visible
+import com.movieapp.utils.extensions.hide
+import com.movieapp.utils.extensions.setImage
+import com.movieapp.utils.extensions.visible
 import com.movieapp.model.Movie
 import com.movieapp.ui.base.BaseFragment
 import com.movieapp.utils.Constants.IMAGE_BASE_URL
@@ -36,6 +37,7 @@ class MoviesDetailFragment :
         fillData(args.movie)
         initRecycler()
         listeners()
+        animations()
     }
 
     override fun collectors() {
@@ -84,6 +86,13 @@ class MoviesDetailFragment :
                 }
             }
         }
+    }
+
+    private fun animations() {
+        val animation = AnimationUtils.loadAnimation(context, R.anim.left_to_right)
+        binding.ivBackground.startAnimation(animation)
+        binding.tvTitle.startAnimation(animation)
+        binding.tvDescription.startAnimation(animation)
     }
 
 }
